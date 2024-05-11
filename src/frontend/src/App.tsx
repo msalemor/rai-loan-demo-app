@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createSignal } from 'solid-js'
+import { Spinner, SpinnerType } from 'solid-spinner'
 
 interface ILoanParameters {
   homeValue: string,
@@ -96,6 +97,7 @@ function App() {
   //const [loanStatus, setLoanStatus] = createSignal<string>("Approved")
   const [payment, setPayment] = createSignal<ILoanTotals>(LoanTotals)
   const [decision, setDecision] = createSignal<IDecision>()
+  const [processing, setProcessing] = createSignal(false)
 
 
   const checkAllParameters = (parameters: ILoanParameters): boolean => {
@@ -162,11 +164,12 @@ function App() {
   }
 
   const EvaluateLoan = async () => {
+    if (processing()) return
     if (!checkAllParameters(parameters())) {
       alert("Please fill all the required fields")
       return
     }
-
+    setProcessing(true)
     const loan_parameters = buildBodParameters()
     let prompt = prompt_template.replace("<LOAN_PARAMETERS>", loan_parameters)
     let BAD_BOT_RULES = ""
@@ -193,7 +196,7 @@ function App() {
       temperature: 0.1
     }
     //alert(JSON.stringify(payload))
-    try {
+    try {      
       const resp = await axios.post<ICompletionResponse>(openai_endpoint, payload, {
         headers: {
           'Content-Type': 'application/json',
@@ -210,6 +213,8 @@ function App() {
       setDecision(json_response)
     } catch (error) {
       console.error(error)
+    } finally {
+      setProcessing(false)
     }
   }
 
@@ -286,9 +291,9 @@ function App() {
           <div>
             <button class="text-slate-300 hover:underline">Sample</button>
           </div>
-          <button class="w-24 bg-slate-800 text-white font-semibold py-2 hover:bg-slate-700"
+          <button class="w-28 bg-slate-800 text-white font-semibold py-2 hover:bg-slate-700"
             onclick={EvaluateLoan}
-          >Submit</button>
+          ><label>Submit {processing() && <Spinner type={SpinnerType.puff} height={25} class='inline-block' />}</label></button>
         </aside>
         <main class='w-3/4 h-[calc(100vh-80px)] bg-blue-100 flex flex-col p-4 items-center space-y-3'>
           <label class='text-xl font-bold'>Loan Information</label>
