@@ -81,13 +81,11 @@ user:
 Can the following loan be approved?
 <LOAN_PARAMETERS>
 
-Output format:
+Respond in the following JSON format:
 {
   "status": ""//Approved or Denied
   "reason": ""//Explanation
 }
-
-Respond in JSON format only.
 `
 
 const openai_endpoint: string = import.meta.env.VITE_OPENAI_URL
@@ -191,7 +189,7 @@ function App() {
           content: prompt
         }
       ],
-      max_tokens: 100,
+      max_tokens: 500,
       temperature: 0.1
     }
     //alert(JSON.stringify(payload))
