@@ -7,12 +7,12 @@ An app designed to hold responsible AI conversations.
 ![Screenshot](images/rai-calculator.png)
 
 
-## Go App
+## Good App
 
 - Will deny loan based on bad credit history
 - Or a zip code that has dangerous conditions
 
-# Bad App
+## Bad App
 
 - Will deny loan based on bad credit history
 - Or a zip code that has dangerous conditions or just a zip code number
