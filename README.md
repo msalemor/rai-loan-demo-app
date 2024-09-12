@@ -1,4 +1,4 @@
-# rai-loan-demo-app
+# RAI Demo Loan Calculator
 
 An app designed to hold responsible AI conversations.
 
